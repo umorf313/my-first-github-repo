@@ -1,27 +1,626 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
-    <style>
-        body {
-            background-image: url("ANAS.jpg");
-            background-size:cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-        }
-    </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My prectice Site</title>
+
+    <title>আমার আয়-ব্যয়ের হিসাব</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, "Noto Sans Bengali", sans-serif;
+            background: linear-gradient(135deg, #e8f5e9, #e3f2fd);
+            min-height: 100vh;
+            padding: 20px;
+            color: #222;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            text-align: center;
+            padding: 25px 15px;
+            border-radius: 18px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .header h1 {
+            color: #176b3a;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #666;
+        }
+
+        /* Summary */
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .summary-box {
+            background: white;
+            padding: 20px 10px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.07);
+        }
+
+        .summary-box h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .summary-box p {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .income-box h3,
+        .income-box p {
+            color: #16833f;
+        }
+
+        .expense-box h3,
+        .expense-box p {
+            color: #d62828;
+        }
+
+        .balance-box h3,
+        .balance-box p {
+            color: #1769aa;
+        }
+
+        /* Form */
+        .form-box {
+            background: white;
+            padding: 25px;
+            border-radius: 18px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .form-box h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #176b3a;
+        }
+
+        .add-button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            background: #176b3a;
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .add-button:hover {
+            background: #0f542c;
+        }
+
+        /* History */
+        .history {
+            background: white;
+            padding: 25px;
+            border-radius: 18px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .history h2 {
+            margin-bottom: 20px;
+        }
+
+        .transaction {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .transaction:last-child {
+            border-bottom: none;
+        }
+
+        .transaction-info {
+            flex: 1;
+        }
+
+        .transaction-info strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .transaction-info small {
+            color: #777;
+        }
+
+        .transaction-amount {
+            font-size: 18px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .income {
+            color: #16833f;
+        }
+
+        .expense {
+            color: #d62828;
+        }
+
+        .delete-button {
+            border: none;
+            background: #ffeded;
+            color: #d62828;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .delete-button:hover {
+            background: #ffd4d4;
+        }
+
+        .empty {
+            text-align: center;
+            color: #888;
+            padding: 30px 10px;
+        }
+
+        /* Mobile */
+        @media (max-width: 600px) {
+
+            body {
+                padding: 10px;
+            }
+
+            .summary {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .form-box,
+            .history {
+                padding: 18px;
+            }
+
+            .transaction {
+                align-items: flex-start;
+            }
+
+            .transaction-amount {
+                font-size: 16px;
+            }
+        }
+    </style>
 </head>
+
 <body>
-    <h1 style="font-family: serif;
-    color:chocolate; text-align: center;">
-        Lerning Quran with ANAS
-    </h1>
-    
-    <p>
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Consectetur explicabo porro corporis saepe a iste possimus perferendis nihil provident minus? Minima vel quas repellat officia autem quae neque tenetur ducimus?
-    </p>
+
+    <div class="container">
+
+        <!-- Header -->
+        <div class="header">
+            <h1>💰 আমার আয়-ব্যয়ের হিসাব</h1>
+            <p>প্রতিদিনের আয় ও ব্যয়ের হিসাব সহজে রাখুন</p>
+        </div>
+
+
+        <!-- Summary -->
+        <div class="summary">
+
+            <div class="summary-box income-box">
+                <h3>মোট আয়</h3>
+                <p id="totalIncome">৳ ০</p>
+            </div>
+
+            <div class="summary-box expense-box">
+                <h3>মোট ব্যয়</h3>
+                <p id="totalExpense">৳ ০</p>
+            </div>
+
+            <div class="summary-box balance-box">
+                <h3>বর্তমান ব্যালান্স</h3>
+                <p id="balance">৳ ০</p>
+            </div>
+
+        </div>
+
+
+        <!-- Add Form -->
+        <div class="form-box">
+
+            <h2>নতুন হিসাব যোগ করুন</h2>
+
+            <div class="form-row">
+
+                <div class="input-group">
+                    <label for="type">ধরন</label>
+
+                    <select id="type">
+                        <option value="income">আয়</option>
+                        <option value="expense">ব্যয়</option>
+                    </select>
+                </div>
+
+
+                <div class="input-group">
+                    <label for="amount">টাকার পরিমাণ</label>
+
+                    <input
+                        type="number"
+                        id="amount"
+                        placeholder="যেমন: 15000"
+                        min="1"
+                    >
+                </div>
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label for="description">বিবরণ</label>
+
+                <input
+                    type="text"
+                    id="description"
+                    placeholder="যেমন: বেতন / বাজার / যাতায়াত"
+                >
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label for="date">তারিখ</label>
+
+                <input type="date" id="date">
+
+            </div>
+
+
+            <button class="add-button" onclick="addTransaction()">
+                হিসাব যোগ করুন
+            </button>
+
+        </div>
+
+
+        <!-- History -->
+        <div class="history">
+
+            <h2>📋 হিসাবের তালিকা</h2>
+
+            <div id="transactionList">
+
+                <div class="empty">
+                    এখনো কোনো হিসাব যোগ করা হয়নি।
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        // ব্রাউজার থেকে পুরোনো হিসাব নেওয়া
+        let transactions =
+            JSON.parse(localStorage.getItem("myTransactions")) || [];
+
+
+        // আজকের তারিখ বসানো
+        document.getElementById("date").value =
+            new Date().toISOString().split("T")[0];
+
+
+        // নতুন হিসাব যোগ করার ফাংশন
+        function addTransaction() {
+
+            const type =
+                document.getElementById("type").value;
+
+            const amount =
+                Number(document.getElementById("amount").value);
+
+            const description =
+                document.getElementById("description").value.trim();
+
+            const date =
+                document.getElementById("date").value;
+
+
+            // তথ্য যাচাই
+            if (amount <= 0) {
+                alert("দয়া করে টাকার পরিমাণ লিখুন।");
+                return;
+            }
+
+            if (description === "") {
+                alert("দয়া করে বিবরণ লিখুন।");
+                return;
+            }
+
+            if (date === "") {
+                alert("দয়া করে তারিখ নির্বাচন করুন।");
+                return;
+            }
+
+
+            // নতুন হিসাব তৈরি
+            const transaction = {
+
+                id: Date.now(),
+
+                type: type,
+
+                amount: amount,
+
+                description: description,
+
+                date: date
+
+            };
+
+
+            // তালিকায় যোগ
+            transactions.push(transaction);
+
+
+            // ব্রাউজারে সংরক্ষণ
+            saveData();
+
+
+            // ইনপুট খালি করা
+            document.getElementById("amount").value = "";
+
+            document.getElementById("description").value = "";
+
+
+            // হিসাব আপডেট
+            displayTransactions();
+
+        }
+
+
+        // হিসাব সংরক্ষণ
+        function saveData() {
+
+            localStorage.setItem(
+                "myTransactions",
+                JSON.stringify(transactions)
+            );
+
+        }
+
+
+        // হিসাব দেখানো
+        function displayTransactions() {
+
+            const list =
+                document.getElementById("transactionList");
+
+
+            // মোট আয় ও ব্যয়
+            let totalIncome = 0;
+
+            let totalExpense = 0;
+
+
+            // পুরোনো হিসাব থেকে মোট বের করা
+            transactions.forEach(function(item) {
+
+                if (item.type === "income") {
+
+                    totalIncome += item.amount;
+
+                } else {
+
+                    totalExpense += item.amount;
+
+                }
+
+            });
+
+
+            // ব্যালান্স
+            const balance =
+                totalIncome - totalExpense;
+
+
+            // Summary দেখানো
+            document.getElementById("totalIncome").innerText =
+                "৳ " + formatNumber(totalIncome);
+
+            document.getElementById("totalExpense").innerText =
+                "৳ " + formatNumber(totalExpense);
+
+            document.getElementById("balance").innerText =
+                "৳ " + formatNumber(balance);
+
+
+            // কোনো হিসাব না থাকলে
+            if (transactions.length === 0) {
+
+                list.innerHTML = `
+                    <div class="empty">
+                        এখনো কোনো হিসাব যোগ করা হয়নি।
+                    </div>
+                `;
+
+                return;
+
+            }
+
+
+            // নতুন হিসাব আগে দেখানো
+            const sortedTransactions =
+                [...transactions].reverse();
+
+
+            list.innerHTML = "";
+
+
+            sortedTransactions.forEach(function(item) {
+
+                const div =
+                    document.createElement("div");
+
+                div.className = "transaction";
+
+
+                const typeText =
+                    item.type === "income"
+                    ? "আয়"
+                    : "ব্যয়";
+
+
+                const amountClass =
+                    item.type === "income"
+                    ? "income"
+                    : "expense";
+
+
+                const sign =
+                    item.type === "income"
+                    ? "+"
+                    : "-";
+
+
+                div.innerHTML = `
+
+                    <div class="transaction-info">
+
+                        <strong>
+                            ${item.description}
+                        </strong>
+
+                        <small>
+                            ${item.date} • ${typeText}
+                        </small>
+
+                    </div>
+
+
+                    <div class="transaction-amount ${amountClass}">
+                        ${sign} ৳ ${formatNumber(item.amount)}
+                    </div>
+
+
+                    <button
+                        class="delete-button"
+                        onclick="deleteTransaction(${item.id})"
+                    >
+                        মুছুন
+                    </button>
+
+                `;
+
+
+                list.appendChild(div);
+
+            });
+
+        }
+
+
+        // হিসাব মুছে ফেলা
+        function deleteTransaction(id) {
+
+            const confirmDelete =
+                confirm("আপনি কি এই হিসাবটি মুছে ফেলতে চান?");
+
+
+            if (!confirmDelete) {
+                return;
+            }
+
+
+            transactions =
+                transactions.filter(function(item) {
+
+                    return item.id !== id;
+
+                });
+
+
+            saveData();
+
+            displayTransactions();
+
+        }
+
+
+        // টাকার সংখ্যা সুন্দরভাবে দেখানো
+        function formatNumber(number) {
+
+            return new Intl.NumberFormat("en-IN").format(number);
+
+        }
+
+
+        // ওয়েবসাইট চালু হওয়ার সময় হিসাব দেখানো
+        displayTransactions();
+
+    </script>
+
 </body>
 </html>
